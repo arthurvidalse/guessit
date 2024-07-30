@@ -6,10 +6,6 @@ html, body {
   font-family: 'Rubik Mono One', monospace;
   margin: 0;
   padding: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 :root {
@@ -23,14 +19,14 @@ html, body {
   color: white;
   text-align: center;
   font-size: 3rem;
+  margin-top: 1rem;
   margin-bottom: 2rem;
 }
 
 .menu {
   display: flex;
-  flex-direction: column; /* Coloca os botões em coluna */
-  align-items: center;    /* Centraliza os botões horizontalmente */
-  gap: 1rem;              /* Espaçamento entre os botões */
+  justify-content: center;
+  gap: 2rem;
 }
 
 .menu-button {
@@ -41,7 +37,6 @@ html, body {
   font-size: 1.5rem;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  width: 200px; /* Define uma largura fixa para os botões */
 }
 
 .menu-button:hover {

@@ -1,5 +1,6 @@
 import { testDictionary, realDictionary } from './dictionary.js';
 
+// for testing purposes, make sure to use the test dictionary
 console.log('test dictionary:', testDictionary);
 
 const dictionary = realDictionary;
@@ -8,13 +9,14 @@ const wordLength = secretWord.length;
 
 const state = {
   secret: secretWord,
-  grid: Array(6).fill().map(() => Array(wordLength).fill('')),
+  grid: Array(6)
+    .fill()
+    .map(() => Array(wordLength).fill('')),
   currentRow: 0,
   currentCol: 0,
 };
 
 function drawGrid(container) {
-  console.log('Desenhando a grade');
   const grid = document.createElement('div');
   grid.className = 'grid';
   grid.style.gridTemplateColumns = `repeat(${wordLength}, auto)`;
@@ -29,7 +31,6 @@ function drawGrid(container) {
 }
 
 function updateGrid() {
-  console.log('Atualizando a grade');
   for (let i = 0; i < state.grid.length; i++) {
     for (let j = 0; j < state.grid[i].length; j++) {
       const box = document.getElementById(`box${i}${j}`);
@@ -49,9 +50,7 @@ function drawBox(container, row, col, letter = '') {
 }
 
 function registerKeyboardEvents() {
-  console.log('Registrando eventos de teclado');
   document.body.onkeydown = (e) => {
-    console.log('Tecla pressionada:', e.key);
     const key = e.key;
     if (key === 'Enter') {
       if (state.currentCol === wordLength) {
@@ -81,13 +80,32 @@ function getCurrentWord() {
 }
 
 function isWordValid(word) {
-  return true; 
+  return dictionary.includes(word);
+}
+
+function getNumOfOccurrencesInWord(word, letter) {
+  let result = 0;
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] === letter) {
+      result++;
+    }
+  }
+  return result;
+}
+
+function getPositionOfOccurrence(word, letter, position) {
+  let result = 0;
+  for (let i = 0; i <= position; i++) {
+    if (word[i] === letter) {
+      result++;
+    }
+  }
+  return result;
 }
 
 function revealWord(guess) {
-  console.log('Revelando a palavra:', guess);
   const row = state.currentRow;
-  const animation_duration = 500; 
+  const animation_duration = 500; // ms
 
   for (let i = 0; i < wordLength; i++) {
     const box = document.getElementById(`box${row}${i}`);
@@ -209,10 +227,9 @@ function alertGameOver(secretWord) {
 }
 
 function startup() {
-  console.log('Iniciando o jogo');
   const game = document.getElementById('game');
   drawGrid(game);
   registerKeyboardEvents();
 }
 
-window.onload = startup;
+startup();

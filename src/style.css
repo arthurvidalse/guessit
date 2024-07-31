@@ -3,9 +3,6 @@
 html, body {
   background: var(--default);
   background-size: cover;
-  font-family: 'Rubik Mono One', monospace;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
@@ -13,34 +10,6 @@ html, body {
   --empty: #818181;
   --wrong: #b59f3b;
   --right: #015207;
-}
-
-.title {
-  color: white;
-  text-align: center;
-  font-size: 3rem;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-
-.menu {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.menu-button {
-  background-color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 1rem 2rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.menu-button:hover {
-  background-color: #f0f0f0;
 }
 
 #game {
@@ -98,6 +67,23 @@ html, body {
   }
 }
 
+.title {
+  color: white;
+  text-align: center;
+  font-family: "Rubik Mono One", monospace;
+  font-size: 2rem;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.title-word-clone {
+  position: absolute;
+  left: calc(50% + 75px);
+  transform: rotate(25deg);
+  color: yellow;
+  font-size: 1.2rem;
+}
+
 .footer {
   display: flex;
   justify-content: center;
@@ -106,10 +92,6 @@ html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.social-media-links {
-  display: flex;
-  gap: 1rem;
-}
 
 .toast {
   position: fixed;

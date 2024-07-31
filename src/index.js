@@ -1,6 +1,5 @@
 import { testDictionary, realDictionary } from './dictionary.js';
 
-// for testing purposes, make sure to use the test dictionary
 console.log('test dictionary:', testDictionary);
 
 const dictionary = realDictionary;
@@ -55,13 +54,9 @@ function registerKeyboardEvents() {
     if (key === 'Enter') {
       if (state.currentCol === wordLength) {
         const word = getCurrentWord();
-        if (isWordValid(word)) {
-          revealWord(word);
-          state.currentRow++;
-          state.currentCol = 0;
-        } else {
-          alertInvalidWord();
-        }
+        revealWord(word);
+        state.currentRow++;
+        state.currentCol = 0;
       }
     }
     if (key === 'Backspace') {
@@ -80,7 +75,7 @@ function getCurrentWord() {
 }
 
 function isWordValid(word) {
-  return dictionary.includes(word);
+  return true; // Always accept any word
 }
 
 function getNumOfOccurrencesInWord(word, letter) {
@@ -105,7 +100,7 @@ function getPositionOfOccurrence(word, letter, position) {
 
 function revealWord(guess) {
   const row = state.currentRow;
-  const animation_duration = 500; // ms
+  const animation_duration = 500; 
 
   for (let i = 0; i < wordLength; i++) {
     const box = document.getElementById(`box${row}${i}`);

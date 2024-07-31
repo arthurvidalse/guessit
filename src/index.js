@@ -104,7 +104,7 @@ function getCurrentWord() {
 }
 
 function isWordValid(word) {
-  return dictionary.includes(word.toLowerCase());
+  return true;
 }
 
 function getNumOfOccurrencesInWord(word, letter) {

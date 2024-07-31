@@ -1,32 +1,19 @@
 import { testDictionary, realDictionary } from './dictionary.js';
 
-// Para fins de teste, use o dicionário de teste
 console.log('test dictionary:', testDictionary);
 
 const dictionary = realDictionary;
-let secretWord = '';
-const wordLength = 5;
+const secretWord = dictionary[Math.floor(Math.random() * dictionary.length)];
+const wordLength = secretWord.length;
+
 const state = {
-  secret: '',
-  grid: Array(6).fill().map(() => Array(wordLength).fill('')),
+  secret: secretWord,
+  grid: Array(6)
+    .fill()
+    .map(() => Array(wordLength).fill('')),
   currentRow: 0,
   currentCol: 0,
-  isGameOver: false
 };
-
-function initializeGame() {
-  secretWord = dictionary[Math.floor(Math.random() * dictionary.length)];
-  state.secret = secretWord;
-  state.grid = Array(6).fill().map(() => Array(wordLength).fill(''));
-  state.currentRow = 0;
-  state.currentCol = 0;
-  state.isGameOver = false;
-
-  const gameContainer = document.getElementById('game');
-  gameContainer.innerHTML = ''; // Limpa o conteúdo do container do jogo
-  drawGrid(gameContainer);
-  registerKeyboardEvents();
-}
 
 function drawGrid(container) {
   const grid = document.createElement('div');
@@ -42,15 +29,6 @@ function drawGrid(container) {
   container.appendChild(grid);
 }
 
-function drawBox(container, row, col, letter = '') {
-  const box = document.createElement('div');
-  box.className = 'box';
-  box.textContent = letter;
-  box.id = `box${row}${col}`;
-  container.appendChild(box);
-  return box;
-}
-
 function updateGrid() {
   for (let i = 0; i < state.grid.length; i++) {
     for (let j = 0; j < state.grid[i].length; j++) {
@@ -60,10 +38,18 @@ function updateGrid() {
   }
 }
 
+function drawBox(container, row, col, letter = '') {
+  const box = document.createElement('div');
+  box.className = 'box';
+  box.textContent = letter;
+  box.id = `box${row}${col}`;
+
+  container.appendChild(box);
+  return box;
+}
+
 function registerKeyboardEvents() {
   document.body.onkeydown = (e) => {
-    if (state.isGameOver) return;
-
     const key = e.key;
     if (key === 'Enter') {
       if (state.currentCol === wordLength) {
@@ -72,17 +58,6 @@ function registerKeyboardEvents() {
           revealWord(word);
           state.currentRow++;
           state.currentCol = 0;
-          if (word === state.secret || state.currentRow >= 6) {
-            state.isGameOver = true;
-            setTimeout(() => {
-              if (word === state.secret) {
-                alertCongratulations();
-              } else {
-                alertGameOver(state.secret);
-              }
-              returnToMenu();
-            }, 100);
-          }
         } else {
           alertInvalidWord();
         }
@@ -104,7 +79,7 @@ function getCurrentWord() {
 }
 
 function isWordValid(word) {
-  return true;
+  return true; 
 }
 
 function getNumOfOccurrencesInWord(word, letter) {
@@ -129,7 +104,7 @@ function getPositionOfOccurrence(word, letter, position) {
 
 function revealWord(guess) {
   const row = state.currentRow;
-  const animation_duration = 500; // ms
+  const animation_duration = 500; 
 
   for (let i = 0; i < wordLength; i++) {
     const box = document.getElementById(`box${row}${i}`);
@@ -155,6 +130,17 @@ function revealWord(guess) {
     box.classList.add('animated');
     box.style.animationDelay = `${(i * animation_duration) / 2}ms`;
   }
+
+  const isWinner = state.secret === guess;
+  const isGameOver = state.currentRow === 5;
+
+  setTimeout(() => {
+    if (isWinner) {
+      alertCongratulations();
+    } else if (isGameOver) {
+      alertGameOver(state.secret);
+    }
+  }, 3 * animation_duration);
 }
 
 function isLetter(key) {
@@ -163,14 +149,14 @@ function isLetter(key) {
 
 function addLetter(letter) {
   if (state.currentCol === wordLength) return;
-  state.grid[state.currentRow][state.currentCol] = letter.toUpperCase();
+  state.grid[state.currentRow][state.currentCol] = letter;
   state.currentCol++;
 }
 
 function removeLetter() {
   if (state.currentCol === 0) return;
+  state.grid[state.currentRow][state.currentCol - 1] = '';
   state.currentCol--;
-  state.grid[state.currentRow][state.currentCol] = '';
 }
 
 function showAlert(type, message) {
@@ -239,35 +225,10 @@ function alertGameOver(secretWord) {
   showAlert('error', `Suas tentativas acabaram! A palavra era ${secretWord}.`);
 }
 
-function returnToMenu() {
-  document.querySelector('.title').style.display = 'block';
-  document.querySelector('.menu').style.display = 'flex';
-  document.getElementById('game').style.display = 'none';
-}
-
-function startGame(mode) {
-  document.querySelector('.title').style.display = 'none';
-  document.querySelector('.menu').style.display = 'none';
-  document.getElementById('game').style.display = 'flex';
-  initializeGame();
-}
-
-document.getElementById('mode1x1').addEventListener('click', () => {
-  startGame('1x1');
-});
-
-document.getElementById('modeCasual').addEventListener('click', () => {
-  startGame('Casual');
-});
-
-document.getElementById('modeCreate').addEventListener('click', () => {
-  alert('Criar Sala ainda não implementado.');
-});
-
 function startup() {
-  const menu = document.querySelector('.menu');
-  menu.style.display = 'flex';
-  document.getElementById('game').style.display = 'none';
+  const game = document.getElementById('game');
+  drawGrid(game);
+  registerKeyboardEvents();
 }
 
 startup();
